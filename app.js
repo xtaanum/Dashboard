@@ -8,10 +8,6 @@ import {
 } from "./api.js";
 
 
-// ===============================
-// DOM ELEMENTS
-// ===============================
-
 const taskList = document.querySelector("#taskList");
 
 const statusMessage = document.querySelector("#statusMessage");
@@ -33,7 +29,6 @@ const filterButtons = document.querySelectorAll(".filter-btn");
 const taskDetails = document.querySelector("#taskDetails");
 
 
-// Summary elements
 const totalTasks = document.querySelector("#totalTasks");
 
 const completedTasks = document.querySelector("#completedTasks");
@@ -43,20 +38,12 @@ const pendingTasks = document.querySelector("#pendingTasks");
 const completionRate = document.querySelector("#completionRate");
 
 
-// ===============================
-// APPLICATION STATE
-// ===============================
-
 let tasks = [];
 
 let currentFilter = "all";
 
 let searchTerm = "";
 
-
-// ===============================
-// STATUS MESSAGE
-// ===============================
 
 const showStatus = (message, type) => {
 
@@ -73,10 +60,6 @@ const hideStatus = () => {
   statusMessage.className = "status-message";
 };
 
-
-// ===============================
-// FETCH TASKS
-// ===============================
 
 const loadTasks = async () => {
 
@@ -114,10 +97,6 @@ const loadTasks = async () => {
 };
 
 
-// ===============================
-// UPDATE SUMMARY
-// ===============================
-
 const updateSummary = () => {
 
   const total = tasks.length;
@@ -145,10 +124,6 @@ const updateSummary = () => {
 };
 
 
-// ===============================
-// FILTER + SEARCH
-// ===============================
-
 const getFilteredTasks = () => {
 
   return tasks.filter((task) => {
@@ -170,10 +145,6 @@ const getFilteredTasks = () => {
 };
 
 
-// ===============================
-// RENDER TASKS
-// ===============================
-
 const renderTasks = () => {
 
   const filteredTasks = getFilteredTasks();
@@ -181,9 +152,7 @@ const renderTasks = () => {
   taskList.innerHTML = "";
 
   hideStatus();
-
-
-  // Empty state
+  
   if (filteredTasks.length === 0) {
 
     showStatus(
@@ -195,7 +164,7 @@ const renderTasks = () => {
   }
 
 
-  // Render each task
+
   filteredTasks.forEach((task) => {
 
     const card = document.createElement("article");
@@ -250,10 +219,6 @@ const renderTasks = () => {
   });
 };
 
-
-// ===============================
-// VIEW SINGLE TASK
-// ===============================
 
 const viewTask = async (id) => {
 
@@ -313,11 +278,6 @@ const viewTask = async (id) => {
   }
 };
 
-
-// ===============================
-// CREATE TASK
-// ===============================
-
 const handleCreateTask = async (event) => {
 
   event.preventDefault();
@@ -328,8 +288,6 @@ const handleCreateTask = async (event) => {
   const completed =
     taskStatus.value === "completed";
 
-
-  // Validation
   if (title === "") {
 
     titleError.textContent =
@@ -355,7 +313,7 @@ const handleCreateTask = async (event) => {
   titleError.textContent = "";
 
 
-  // Disabled state
+  
   submitBtn.disabled = true;
 
   submitBtn.textContent = "Creating...";
@@ -371,12 +329,6 @@ const handleCreateTask = async (event) => {
 
     });
 
-
-    /*
-      JSONPlaceholder simulates POST.
-      We add the returned object to our
-      local array so the UI updates.
-    */
 
     tasks.unshift(newTask);
 
@@ -410,11 +362,6 @@ const handleCreateTask = async (event) => {
   }
 };
 
-
-// ===============================
-// TOGGLE TASK
-// ===============================
-
 const toggleTask = async (id) => {
 
   const task = tasks.find(
@@ -435,12 +382,6 @@ const toggleTask = async (id) => {
 
     });
 
-
-    /*
-      Update our local copy because
-      JSONPlaceholder doesn't persist changes.
-    */
-
     task.completed = updatedTask.completed;
 
     updateSummary();
@@ -460,10 +401,6 @@ const toggleTask = async (id) => {
 };
 
 
-// ===============================
-// DELETE TASK
-// ===============================
-
 const removeTask = async (id) => {
 
   const confirmed = confirm(
@@ -480,10 +417,6 @@ const removeTask = async (id) => {
 
     await deleteTask(id);
 
-
-    /*
-      Remove from local array.
-    */
 
     tasks = tasks.filter(
       (task) => task.id !== id
@@ -505,11 +438,6 @@ const removeTask = async (id) => {
     console.error(error);
   }
 };
-
-
-// ===============================
-// TASK BUTTON EVENTS
-// ===============================
 
 taskList.addEventListener("click", (event) => {
 
@@ -538,10 +466,6 @@ taskList.addEventListener("click", (event) => {
 });
 
 
-// ===============================
-// SEARCH
-// ===============================
-
 searchInput.addEventListener("input", (event) => {
 
   searchTerm = event.target.value;
@@ -550,10 +474,6 @@ searchInput.addEventListener("input", (event) => {
 
 });
 
-
-// ===============================
-// FILTERS
-// ===============================
 
 filterButtons.forEach((button) => {
 
@@ -579,20 +499,10 @@ filterButtons.forEach((button) => {
 
 });
 
-
-// ===============================
-// FORM
-// ===============================
-
 taskForm.addEventListener(
   "submit",
   handleCreateTask
 );
-
-
-// ===============================
-// NEW TASK BUTTON
-// ===============================
 
 document
   .querySelector("#newTaskBtn")
@@ -607,10 +517,5 @@ document
     taskTitle.focus();
 
   });
-
-
-// ===============================
-// START APPLICATION
-// ===============================
 
 loadTasks();
